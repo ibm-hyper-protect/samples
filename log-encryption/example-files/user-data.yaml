@@ -1,0 +1,8 @@
+# =========================================================================
+# IBM Cloud® Virtual Private Cloud uses Cloud-init technology to configure virtual server instances.
+# The User Data field on the New virtual server for VPC page allows users to put in custom configuration options
+# by using cloud-init.
+# Cloud-init supports yaml format for configuration data
+# =========================================================================
+env: hyper-protect-basic.c19 ... 6bBrIm
+workload: hyper-protect-basic.lX8sF ... GdAQyeEw==
