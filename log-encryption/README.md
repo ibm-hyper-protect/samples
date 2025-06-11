@@ -208,5 +208,5 @@ Next, monitor the Serial Console. Once the VSI is up and running, go to the logg
 Use the `decrypt-basic.sh` script along with the private key you generated to decipher the encrypted log message:
 
 ```bash
-echo hyper-protect-basic.rdf...EqM | decrypt-basic.sh logging
+echo hyper-protect-basic.rdf...EqM | ./decrypt-basic.sh logging
 ```
