@@ -99,40 +99,114 @@ This section demonstrates how to deploy a container using **Podman Play** on bot
 
 ## Prepare Your Contract
 
-This tutorial will get you started with a simple Hyper Protect Virtual Servers for VPC contract that only has an [`env` section](https://cloud.ibm.com/docs/vpc?topic=vpc-about-contract_se#hpcr_contract_env) and a [`workload` section](https://cloud.ibm.com/docs/vpc?topic=vpc-about-contract_se#hpcr_contract_workload).
-As recommended by the [product guide](https://cloud.ibm.com/docs/vpc?topic=vpc-about-contract_se#hpcr_contract_encrypt), we will encrypt both sections. When the Hyper Protect Virtual Servers for VPC instance boots, the bootloader decrypts the contract if it is encrypted. Download the certificate that is used to encrypt the contract [here](https://cloud.ibm.com/media/docs/downloads/hyper-protect-container-runtime/ibm-hyper-protect-container-runtime-1-0-s390x-8-encrypt.crt). By the time this tutorial was written, the latest version of the IBM Hyper Protect Container Runtime image version was `ibm-hyper-protect-container-runtime-1-0-s390x-8`, thus this example uses the certificate for this image. The file `hpcr.crt` is already available inside `example-files`. Please follow the steps below to obtain the simple contract.
-1. Get the hostname and the ingestion key of your logging instance, see [Logging for Hyper Protect Virtual Servers for VPC](https://cloud.ibm.com/docs/vpc?topic=vpc-logging-for-hyper-protect-virtual-servers-for-vpc).
-2. Create and encrypt the `env` section. Please refer to the `env.yaml` file in the `example-files` folder, replace the content with your logging hostname and ingestion key. Run the `encrypt-basic.sh` script to obtain the encrypted `env` section of the contract.
-```
-        cat env.yaml | ./encrypt-basic.sh hpcr.crt
-```
-3. Create the `workload` section. Please refer to the `workload.yaml` sample file in the `example-files` folder. In this example, the docker compose file in the `example-files` folder will be used for the `compose` subsection.
-***In addition, please provide the public key for encrypting the log messages.***
-Run the following commands to generate a key pair, we will proceed with the public key ( please note that `logEncrypt` is the passphrase to generate keys, you may use your own).
-```
-        openssl genrsa -aes128 -passout pass:logEncrypt -out logging 4096
-```
-```
-        openssl rsa -in logging -passin pass:logEncrypt -pubout -out logging.pub
-```
-4. A sample output can be found in the `compose` folder under `example-files`. Keep in mind that the `logging.pub` file containing the public key must lie within the `compose` folder along with `docker-compose.yml`.
+This tutorial will guide you through creating a simple contract for both **IBM Cloud Hyper Protect Virtual Server for VPC (HPVS)** and **Hyper Protect Container Runtime for Red Hat Virtualization Solutions (HPCR RHVS)**. The contract consists of just two sections:
 
-We then go on the compress and encrypt the folder, as the `compose` subsection requires this for the `archive` value. Use the followin command to obtain the `base64` encoded archive as a file named `compose.b64`. Use the raw content of `compose.b64` for the value of `archive` under the `compose` subsection.
-```
-        tar czvf - -C <COMPOSE_FOLDER> . | base64 -w0 > compose.b64
-```
-5. Run the `encrypt-basic.sh` script to obtain the encrypted `workload` section of the contract.
-```
-        cat workload.yaml | ./encrypt-basic.sh hpcr.crt
-```
-6. Complete the `user-data.yaml` with the output of of Step 2 and 5. Please refer to the sample `user-data.yaml` for correct schema. Please note the `hyper-protect-basic` token approach to implement hybrid encryption, as it is used throughout **IBM Cloud Hyper Protect Virtual Server for VPC**
+- An [`env` section](https://cloud.ibm.com/docs/vpc?topic=vpc-about-contract_se#hpcr_contract_env)  
+- A [`workload` section](https://cloud.ibm.com/docs/vpc?topic=vpc-about-contract_se#hpcr_contract_workload)
+
+As recommended by the [product guide](https://cloud.ibm.com/docs/vpc?topic=vpc-about-contract_se#hpcr_contract_encrypt), both sections should be encrypted. When your HPVS or HPCR RHVS instance boots, the bootloader decrypts the contract automatically if it’s encrypted.
+
+You will need to download the certificate used for contract encryption. Follow the instructions here: [Downloading the encryption certificate and extracting the public key](https://cloud.ibm.com/docs/vpc?topic=vpc-about-contract_se#hpcr_contract_encrypt).  
+
+For this example, we assume you’ve downloaded the latest encryption certificate and renamed it to `hpcr.crt`.
 
 
-## Create your Virtual Server Instance
+### Steps to Create Your Contract
 
-With the User Data available, we go ahead to create an instance. The quickest way is to use the [UI](https://cloud.ibm.com/docs/vpc?topic=vpc-creating-virtual-servers&interface=ui). For the Operating system, choose [**IBM Hyper Protect**](https://cloud.ibm.com/docs/vpc?topic=vpc-vsabout-images#hyper-protect-runtime) to create an **IBM Cloud® Hyper Protect Virtual Server for IBM Cloud® Virtual Private Cloud instance**. Remember to paste your User Data in the `User data` box. Click **Create virtual server instance** when you are ready. Next, monitor the Serial Console, go to the logging instance you provisioned when the VSI is up and running. Open the Dash Board and find the cipher text which is your encrypted log message.
 
-Use the `decrypt-basic.sh` along with the private key you generated to decipher the encrypted log message.
+#### 1. Get Logging Instance Details
+
+Get the **hostname** and **IAM API Key** of your logging instance. For help, see [Logging for Hyper Protect Virtual Servers for VPC](https://cloud.ibm.com/docs/vpc?topic=vpc-logging-for-hyper-protect-virtual-servers-for-vpc).
+
+
+#### 2. Create and Encrypt the `env` Section
+
+- Edit the `env.yaml` file in this folder: replace its content with your logging hostname and IAM key.
+- Run this command to encrypt the `env` section:
+
+```bash
+cat env.yaml | ./encrypt-basic.sh hpcr.crt
 ```
+
+This will output your encrypted `env` section.
+
+
+#### 3. Create the workload Section
+
+You have two options to define the workload section:
+
+- Use `workload.compose.yaml` to create a Docker Compose contract.
+- Use `workload.pods.yaml` to create a Podman Play contract.
+
+Both files are included in this folder and correspond to the `compose` and `play` subsections, respectively.
+
+
+#### Important: Generate a Public Key for Log Message Encryption
+
+You must provide a public key to encrypt your log messages. Generate the key pair with the following commands (replace the passphrase `logEncrypt` if you want):
+
+```bash
+openssl genrsa -aes128 -passout pass:logEncrypt -out logging 4096
+openssl rsa -in logging -passin pass:logEncrypt -pubout -out logging.pub
+```
+
+- `logging` is your encrypted private key file.  
+- `logging.pub` is the public key file.
+
+Make sure to place the `logging.pub` file inside your `compose` or `pods` folder alongside your `docker-compose.yml` or `pods.yaml` respectively.
+
+
+#### 4. Compress and Encode the Workload Folder
+
+For the Docker Compose workload, compress and encode the folder as base64. This is required for the `archive` field under the `compose` subsection.
+
+Run this command:
+
+```bash
+tar czvf - -C compose . | base64 -w0 > compose.b64
+```
+
+For the Podman Play workload, compress and encode the folder as base64. This is required for the `archive` field under the `play` subsection.
+
+Run this command:
+
+```bash
+tar czvf - -C pods . | base64 -w0 > pods.b64
+```
+
+Use the raw content of `compose.b64` or `pods.b64` as the value for the archive field.
+
+
+#### 5. Encrypt the workload Section
+
+Run the encryption script on your workload file:
+
+```bash
+cat workload.yaml | ./encrypt-basic.sh hpcr.crt
+```
+
+This will output the encrypted workload section.
+
+
+#### 6. Complete the `user-data.yaml`
+
+Use the encrypted outputs from Step 2 (`env`) and Step 5 (`workload`) to complete your `user-data.yaml`. Refer to the sample `user-data.yaml` for the correct structure and schema.
+
+> **Note:** The `hyper-protect-basic` token approach is used here to implement hybrid encryption, which is consistent across both **IBM Cloud Hyper Protect Virtual Server for VPC** and **Hyper Protect Container Runtime for RedHat Virtualization Solutions**.
+
+
+## Create your Hyper Protect Virtual Servers Instance
+
+With the User Data available, you can now create an instance. The quickest way is to use the [UI](https://cloud.ibm.com/docs/vpc?topic=vpc-creating-virtual-servers&interface=ui).
+
+For the Operating System, choose [**IBM Hyper Protect**](https://cloud.ibm.com/docs/vpc?topic=vpc-vsabout-images#hyper-protect-runtime) to create an **IBM Cloud Hyper Protect Virtual Server for VPC**.
+
+Remember to paste your User Data in the `User data` box. Click **Create virtual server instance** when you are ready.
+
+Next, monitor the Serial Console. Once the VSI is up and running, go to the logging instance you provisioned. Open the Dashboard and locate the cipher text, which is your encrypted log message.
+
+Use the `decrypt-basic.sh` script along with the private key you generated to decipher the encrypted log message:
+
+```bash
 echo hyper-protect-basic.rdf...EqM | decrypt-basic.sh logging
 ```
