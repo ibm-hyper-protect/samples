@@ -41,12 +41,12 @@ In this tutorial, a dedicated public/private key pair is used to encrypt and dec
 #### Public Key Placement Based on Contract Type
 
 - **For Docker Compose Contracts:**  
-  Place the `logging.pub` file in the `compose` folder, alongside the `docker-compose.yml` file.
+  Place the `logging.pub` file in the `compose` folder, alongside the `docker-compose.yaml` file.
 
 - **For Podman Play Contracts:**  
   Place the `logging.pub` file in the `pods` folder, alongside the `pods.yaml` file.
 
-According to the [`workload` section](https://cloud.ibm.com/docs/vpc?topic=vpc-about-contract_se#hpcr_contract_workload) of the contract specification, the `archive` subsection must contain a base64-encoded TGZ archive of the relevant deployment files (e.g., `docker-compose.yml` or `pods.yaml`). Since `logging.pub` is stored in the same folder, it will be included in this encoded archive and available to the virtual server instance for log encryption.
+According to the [`workload` section](https://cloud.ibm.com/docs/vpc?topic=vpc-about-contract_se#hpcr_contract_workload) of the contract specification, the `archive` subsection must contain a base64-encoded TGZ archive of the relevant deployment files (e.g., `docker-compose.yaml` or `pods.yaml`). Since `logging.pub` is stored in the same folder, it will be included in this encoded archive and available to the virtual server instance for log encryption.
 
 > This tutorial also provides sample files — `env.yaml`, `workload.compose.yaml`, `workload.pods.yaml`, and `user-data.yaml`. These samples are provided for reference only to help ensure your files follow the correct schema.
 
@@ -55,7 +55,7 @@ According to the [`workload` section](https://cloud.ibm.com/docs/vpc?topic=vpc-a
 
 This section demonstrates how to deploy a Docker container on an **IBM Cloud Hyper Protect Virtual Server for VPC (HPVS)** using Docker Compose. The deployment files are organized in the `/compose` directory, which includes the following:
 
-1. **`docker-compose.yml`**  
+1. **`docker-compose.yaml`**  
    Located in the `/compose` directory, this file defines the containerized application used in this tutorial. It pulls the official [Ubuntu image from Docker Hub](https://hub.docker.com/_/ubuntu).
 
 2. **`example.sh`**  
@@ -153,7 +153,7 @@ openssl rsa -in logging -passin pass:logEncrypt -pubout -out logging.pub
 - `logging` is your encrypted private key file.  
 - `logging.pub` is the public key file.
 
-Make sure to place the `logging.pub` file inside your `compose` or `pods` folder alongside your `docker-compose.yml` or `pods.yaml` respectively.
+Make sure to place the `logging.pub` file inside your `compose` or `pods` folder alongside your `docker-compose.yaml` or `pods.yaml` respectively.
 
 
 #### 4. Compress and Encode the Workload Folder
@@ -195,7 +195,7 @@ Use the encrypted outputs from Step 2 (`env`) and Step 5 (`workload`) to complet
 > **Note:** The `hyper-protect-basic` token approach is used here to implement hybrid encryption, which is consistent across both **IBM Cloud Hyper Protect Virtual Server for VPC** and **Hyper Protect Container Runtime for RedHat Virtualization Solutions**.
 
 
-## Create your Hyper Protect Virtual Servers Instance
+## Example: Generate Encrypted Logs on your IBM Hyper Protect Virtual Servers Instance in IBM Cloud
 
 With the User Data available, you can now create an instance. The quickest way is to use the [UI](https://cloud.ibm.com/docs/vpc?topic=vpc-creating-virtual-servers&interface=ui).
 
