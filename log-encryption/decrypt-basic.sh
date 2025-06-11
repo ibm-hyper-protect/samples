@@ -1,4 +1,10 @@
 #!/bin/bash
+#
+# Usage:
+#   decrypt-basic.sh <pub-key-file>
+# Example
+#   cat <file> | ./se-encrypt-basic.sh <pub-key-path>
+#
 
 key_file=$1
 

@@ -2,6 +2,9 @@
 #
 # Usage:
 #   se-encrypt-basic.sh <pub-key-file>
+#
+# Example:
+#   cat <file> | ./se-encrypt-basic.sh <pub-key-file>
 
 usage() {
     echo "Usage: $(basename "$0") <pub-cert-file>"

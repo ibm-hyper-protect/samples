@@ -5,3 +5,4 @@ services:
       - ./logging.pub:/var/logging/logging.pub:ro
       - ./bin/:/var/logging/bin/:ro
     command: bash /var/logging/bin/example.sh
+  

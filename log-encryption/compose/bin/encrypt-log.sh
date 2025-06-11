@@ -2,13 +2,17 @@
 #
 # Usage:
 #   se-encrypt-basic.sh <pub-key-file>
+#
+# Example
+# cat <file> | ./se-encrypt-basic.sh <pub-key-path>
+#
 
 usage() {
     echo "Usage: $(basename "$0") <pub-cert-file>"
     exit 1
 }
 
-# read clear-text from STDIN
+# Read clear-text from STDIN
 test  "$#" -eq 1 || usage
 key_file="$1"
 cleartext_file="$(mktemp)"
@@ -17,10 +21,10 @@ cat > "$cleartext_file"
 
 set -eu -o pipefail
 
-# create random password 32 Byte
+# Create random password 32 Byte
 password="$(openssl rand 32 | base64 -w0)"
 
-# encrypt password with public rsa key
+# Encrypt password with public rsa key
 password_enc="$(
     echo -n "$password" | base64 -d | openssl pkeyutl \
     -encrypt \
@@ -28,7 +32,7 @@ password_enc="$(
     -pubin \
     | base64 -w0)"
 
-# encrypt cleartext-file with random password
+# Encrypt cleartext-file with random password
 cleartext_enc="$(
     echo -n "$password" | base64 -d | openssl enc \
     -aes-256-cbc \
