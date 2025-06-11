@@ -1,0 +1,10 @@
+# =========================================================================
+# A contract is part of the User Data input required to create an instance.
+# =========================================================================
+
+# The workload section provides information to bring up the container workload
+# In this example, only the podman play subsection is needed
+# As the Hyper Protect Container Runtime image uses Docker, a standard Pods file is needed
+type: workload
+play:
+  archive: H4sI ... 7gBQAAA=
