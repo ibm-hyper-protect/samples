@@ -163,7 +163,8 @@ For the Docker Compose workload, compress and encode the folder as base64. This 
 Run this command:
 
 ```bash
-tar czvf - -C compose . | base64 -w0 > compose.b64
+tar czvf compose.tgz compose/bin compose/docker-compose.yaml compose/logging.pub
+base64 -w0 compose.tgz > compose.b64
 ```
 
 For the Podman Play workload, compress and encode the folder as base64. This is required for the `archive` field under the `play` subsection.
@@ -171,7 +172,8 @@ For the Podman Play workload, compress and encode the folder as base64. This is 
 Run this command:
 
 ```bash
-tar czvf - -C pods . | base64 -w0 > pods.b64
+tar czvf pods.tgz pods/bin pods/pods.yaml pods/logging.pub
+base64 -w0 pods.tgz > pods.b64
 ```
 
 Use the raw content of `compose.b64` or `pods.b64` as the value for the archive field.
