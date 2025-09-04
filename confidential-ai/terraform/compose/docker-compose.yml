@@ -1,0 +1,35 @@
+services:
+  triton-server:
+    image: icr.io/ibmz/ibmz-accelerated-for-nvidia-triton-inference-server@sha256:2cedd535805c316fec7dff6cac8129d873da39348459f645240eec005172b641
+    user: "0"
+    privileged: true
+    shm_size: 1g
+    command: bash install.sh
+    ulimits:
+      memlock: -1
+      stack: 67108864
+    environment:
+      - B64_USER=${B64_USER}
+      - B64_PASS=${B64_PASS}
+      - IP=${IP}
+      - PORT=${PORT}
+      - REPO_NAME=${REPO_NAME}
+      - B64_KEY=${B64_KEY}
+      - ENC_MODEL_NAME=${ENC_MODEL_NAME}
+      - MODEL_NAME=${MODEL_NAME}
+    volumes:
+      - ${PWD}/install.sh:/home/ibm-user/install.sh
+    ports:
+    - 8000:8000
+    - 8001:8001
+    - 8002:8002
+  attestation-sidecar:
+    image: docker.io/library/httpd:latest@sha256:3198c1839e1a875f8b83803083758a7635f1ae999f0601f30f2f3b8ce2ac99e3
+    container_name: attestation-sidecar
+    command: bash attest-setup.sh
+    ports:
+    - '80:80'
+    volumes:
+    - ${PWD}/attest-setup.sh:/usr/local/apache2/attest-setup.sh
+    - /var/hyperprotect/se-checksums.txt:/var/hyperprotect/se-checksums.txt
+    - /var/hyperprotect/se-signature.bin:/var/hyperprotect/se-signature.bin
