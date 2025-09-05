@@ -10,10 +10,8 @@ services:
       stack: 67108864
     environment:
       - B64_USER=${B64_USER}
-      - B64_PASS=${B64_PASS}
-      - IP=${IP}
-      - PORT=${PORT}
-      - REPO_NAME=${REPO_NAME}
+      - B64_UAT=${B64_PASS}
+      - HF_REPO=${HF_REPO}
       - B64_KEY=${B64_KEY}
       - ENC_MODEL_NAME=${ENC_MODEL_NAME}
       - MODEL_NAME=${MODEL_NAME}

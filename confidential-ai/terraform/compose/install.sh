@@ -9,10 +9,11 @@ apt-get install -y curl
 apt-get install -y gnupg
 
 USERNAME=$(echo ${B64_USER} | base64 --decode)
-PASSWORD=$(echo ${B64_PASS} | base64 --decode)
+PASSWORD=$(echo ${B64_UAT} | base64 --decode)
 
 echo "Pulling object/archive..."
-curl -u ${USERNAME}:${PASSWORD} -L -O http://${IP}:${PORT}/artifactory/${REPO_NAME}/${ENC_MODEL_NAME}
+hf auth login --token ${PASSWORD}
+hf download ${USERNAME}/${HF_REPO} ${ENC_MODEL_NAME} --local-dir /tmp/
 
 echo "Import Encryption key..."
 echo ${B64_KEY} >> b64.key
@@ -21,7 +22,7 @@ gpg --import decrypt.key
 
 echo "Decrypt zip..."
 ls -la
-gpg -d -o ${MODEL_NAME} ${ENC_MODEL_NAME}
+gpg -d -o ${MODEL_NAME} /tmp/${ENC_MODEL_NAME}
 
 echo "Extracting archive..."
 apt-get install -y unzip
@@ -33,7 +34,7 @@ echo "Listing current directory..."
 pwd
 
 echo "Copying files..."
-cp -r models/ /models
+cp -r /tmp/models/ /models
 
 echo "Starting up application..."
 tritonserver --model-repository=/models

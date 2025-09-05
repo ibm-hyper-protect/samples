@@ -33,10 +33,8 @@ locals {
       "env" : {
         "REGISTRY" : var.registry,
         "B64_USER": var.b64_user,
-        "B64_PASS": var.b64_pass,
-        "REPO_NAME": var.repo_name,
-        "IP": var.ip,
-        "PORT": var.port,
+        "B64_UAT": var.b64_uat,
+        "HF_REPO": var.hf_repo,
         "B64_KEY": var.b64_key,
         "ENC_MODEL_NAME": var.enc_model,
         "MODEL_NAME": var.model

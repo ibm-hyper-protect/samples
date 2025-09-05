@@ -28,7 +28,7 @@ variable "b64_user" {
                 DESC
 }
 
-variable "b64_pass" {
+variable "b64_uat" {
   type        = string
   sensitive   = true
   description = <<-DESC
@@ -36,21 +36,8 @@ variable "b64_pass" {
                 DESC
 }
 
-variable "ip" {
-  type        = string
-  description = <<-DESC
-                  IP of the Artifactory host
-                DESC
-}
 
-variable "port" {
-  type        = string
-  description = <<-DESC
-                  Port of the Artifactory server
-                DESC
-}
-
-variable "repo_name" {
+variable "hf_repo" {
   type        = string
   description = <<-DESC
                  Repo the object is stored in under Artifactory
