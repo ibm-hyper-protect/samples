@@ -10,19 +10,19 @@ This sample creates an encrypted and signed contract for Triton deployment and s
 
 ### Define your settings
 
-- icl_hostname="Your IBM Cloud Logs hostname"
-- icl_iam_apikey="Your IBM Cloud API key"
-- registry="Prefix for the dynamic registry" # e.g. docker.io/library or us.icr.io
-- pull_username="Username for registry" # Username with read access to the IBM container registry
-- pull_password="Password for registry" # Password with read access to the IBM container registry
-- b64_user="Base64 encoded Username for accessing Artifactory"
-- b64_password="Base64 encoded Password for accessing Aritfactory"
-- ip="IP address or Hostname of Artifactory server"  
-- port="Port for accessing Artifactory server"
-- repo_name="Name of the repo the object is stored in under Artifactory"
-- b64_key="Base64 encoded Key used to encrypt/decrypt model"
-- enc_model="Name of the model when encrypted and stored" # e.g. models.zip.gpg
-- model="Name of the model to unzip" # e.g. models.zip
+- `log_hostname`="Logging server hostname"
+- `log_iam_apikey`="Logging server API key"
+- `registry`="icr.io"
+- `pull_username`="Username for registry" # Username with read access to the IBM container registry
+- `pull_password`="Password for registry" # Password with read access to the IBM container registry
+- `b64_user`="Base64 encoded Username for accessing Artifactory"
+- `b64_password`="Base64 encoded Password for accessing Aritfactory"
+- `ip`="IP address or Hostname of Artifactory server"  
+- `port`="Port for accessing Artifactory server"
+- `repo_nam`e="Name of the repo the object is stored in under Artifactory"
+- `b64_key`="Base64 encoded Key used to encrypt/decrypt model"
+- `enc_model`="Name of the model when encrypted and stored" # e.g. models.zip.gpg
+- `model`="Name of the model to unzip" # e.g. models.zip
 
 The settings are defined in form of Terraform variables.
 
