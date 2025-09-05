@@ -16,10 +16,8 @@ This sample creates an encrypted and signed contract for Triton deployment and s
 - `pull_username`="Username for registry" # Username with read access to the IBM container registry
 - `pull_password`="Password for registry" # Password with read access to the IBM container registry
 - `b64_user`="Base64 encoded Username for accessing Artifactory"
-- `b64_password`="Base64 encoded Password for accessing Aritfactory"
-- `ip`="IP address or Hostname of Artifactory server"  
-- `port`="Port for accessing Artifactory server"
-- `repo_nam`e="Name of the repo the object is stored in under Artifactory"
+- `b64_uat`="Base64 encoded Password for accessing Aritfactory"
+- `hf_repo`="Name of the repo the object is stored in under Artifactory"
 - `b64_key`="Base64 encoded Key used to encrypt/decrypt model"
 - `enc_model`="Name of the model when encrypted and stored" # e.g. models.zip.gpg
 - `model`="Name of the model to unzip" # e.g. models.zip
