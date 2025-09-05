@@ -20,8 +20,8 @@ locals {
       "type" : "env",
       "logging" : {
         "logRouter" : {
-          "hostname" : var.icl_hostname,
-          "iamApiKey" : var.icl_iam_apikey,
+          "hostname" : var.log_hostname,
+          "iamApiKey" : var.log_iam_apikey,
         }
       },
       "auths" : {

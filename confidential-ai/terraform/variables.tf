@@ -1,4 +1,4 @@
-variable "icl_hostname" {
+variable "log_hostname" {
   type        = string
   description = <<-DESC
                   Host of IBM Cloud Logs. This can be
@@ -6,7 +6,7 @@ variable "icl_hostname" {
                 DESC
 }
 
-variable "icl_iam_apikey" {
+variable "log_iam_apikey" {
   type        = string
   sensitive   = true
   description = <<-DESC
