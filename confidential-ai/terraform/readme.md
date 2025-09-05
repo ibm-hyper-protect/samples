@@ -79,6 +79,4 @@ terraform apply
 
 ### Further steps
 
-The contract will be written to the file `build/contract.yml` and can now be used for e.g. provisining a HPVS for VPC instance.
-
-Note that you will need to create a public gateway in your VPC before creating the HPVS for VPC instance. This is necessary to allow the HPVS for VPC instance to reach your Log instance through the public gateway. 
+The contract will be written to the file `build/contract.yml` and can now be used for e.g. provisioning a HPVS for VPC instance.
