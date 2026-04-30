@@ -22,7 +22,7 @@ services:
     - 8001:8001
     - 8002:8002
   attestation-sidecar:
-    image: docker.io/library/httpd:latest@sha256:3198c1839e1a875f8b83803083758a7635f1ae999f0601f30f2f3b8ce2ac99e3
+    image: docker.io/library/httpd:latest@sha256:89a0b59e6d7285f00fc8df952a1579c31eb035cbdccb96690051e8bb6432cbea
     container_name: attestation-sidecar
     command: bash attest-setup.sh
     ports:
